@@ -1,0 +1,20 @@
+{
+  "aspnetcore50": {
+    "dependencies": {
+      "System.Runtime": "4.0.20-beta-22523",
+      "System.Data.Common": "4.0.0.0-beta-22605",
+      "System.Data.SqlClient": "4.0.0.0-beta-22605"
+    }
+  },
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es5"
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ]
+}
