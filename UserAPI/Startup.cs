@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using UserBL;
+using UserAPI.Businness;
 
 namespace UserAPI
 {
@@ -14,7 +14,7 @@ namespace UserAPI
         /// <param name="services">Services</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(UsersRepository);
+            //services.AddSingleton(UsersRepository);
 
             // adding MVC Core,authorization and JSON formatting
             services.AddMvcCore()

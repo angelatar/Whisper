@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace UserAPI.Models
 {
+    /// <summary>
+    /// Mapper for users
+    /// </summary>
     public static class Mapper
     {
-        public static User CreateUser(Dictionary<string,object> userSkeleton)
+        /// <summary>
+        /// Mapper for map Dal user to BL user
+        /// </summary>
+        /// <param name="userSkeleton">DAL user</param>
+        /// <returns>BL user</returns>
+        public static User CreateUser(Dictionary<string, object> userSkeleton)
         {
             return new User()
             {
                 ID = int.Parse(userSkeleton["Id"].ToString()),
-                Name=userSkeleton["Name"].ToString(),
+                Name = userSkeleton["Name"].ToString(),
                 Lastname = userSkeleton["Lastname"].ToString(),
                 Username = userSkeleton["Username"].ToString(),
                 PasswordHash = userSkeleton["PasswordHash"].ToString(),
@@ -22,7 +28,12 @@ namespace UserAPI.Models
             };
         }
 
-        public static Dictionary<string,object> SplitUser(User user)
+        /// <summary>
+        /// Mapper for map BL user DAL user
+        /// </summary>
+        /// <param name="user">BL user</param>
+        /// <returns>DAL user</returns>
+        public static Dictionary<string, object> SplitUser(User user)
         {
             var userSkeleton = new Dictionary<string, object>();
 

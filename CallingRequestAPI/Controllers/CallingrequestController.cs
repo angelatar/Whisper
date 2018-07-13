@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CallingRequestAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,28 +7,28 @@ namespace CallingRequestAPI.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class CallingrequestController : Controller
+    public class CallingRequestController : Controller
     {
         // GET api/values
         [HttpGet]
         [Authorize]
-        public IEnumerable<string> Get()
+        public IEnumerable<Request> Get()
         {
-            return new string[] { "value1", "value2" };
+            return null;//new string[] { "value1", "value2" };
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         [Authorize]
-        public string Get(int id)
+        public Request Get(int id)
         {
-            return "value";
+            return null;//"value";
         }
 
         // POST api/values
         [HttpPost]
         [Authorize]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Request value)
         {
         }
 
