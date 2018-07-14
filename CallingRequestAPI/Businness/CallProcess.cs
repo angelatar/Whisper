@@ -1,4 +1,5 @@
 ﻿using CallingRequestAPI.DataAccessors;
+using CallingRequestAPI.Models;
 using System.Collections.Generic;
 
 namespace CallingRequestAPI.Businness
@@ -12,19 +13,14 @@ namespace CallingRequestAPI.Businness
             this.dataAccessor = new BufferDataAccessor();
         }
 
-        public bool SendMessage(int senderID, int receiverID, string traffic)
+        public bool SendCall(Call call)
         {
-            var call = new Dictionary<string, object>();
-            call.Add("SenderID", senderID);
-            call.Add("ReceiverID", receiverID);
-            call.Add("Traffic", traffic);
-
-            return this.dataAccessor.InsertBuffer(call);
+           return this.dataAccessor.InsertBuffer(Mapper.SplitCall(call));
         }
 
-        public Dictionary<string, object> GetMessage(int receiverID)
+        public Call GetCall(int senderID,int receiverID)
         {
-            return this.dataAccessor.GetBuffer(receiverID);
+            return Mapper.CreateCall(dataAccessor.GetBuffer(senderID, receiverID));
         }
 
         public bool ClearBuffer(int senderID, int receiverID)

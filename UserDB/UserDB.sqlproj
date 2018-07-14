@@ -61,6 +61,8 @@
   <ItemGroup>
     <Build Include="Users.sql" />
     <Build Include="sp_User_CRUD.sql" />
+    <Build Include="ValidationCodes.sql" />
+    <Build Include="sp_Validator.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="UserDB.refactorlog" />

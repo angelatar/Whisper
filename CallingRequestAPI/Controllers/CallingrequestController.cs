@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Security.Claims;
+using CallingRequestAPI.Businness;
 using CallingRequestAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,27 +11,36 @@ namespace CallingRequestAPI.Controllers
     [Route("api/[controller]")]
     public class CallingRequestController : Controller
     {
+        private readonly CallingRequest repository;
+
+        public CallingRequestController(CallingRequest repo)
+        {
+            this.repository = repo;
+        }
+
         // GET api/values
         [HttpGet]
         [Authorize]
-        public IEnumerable<Request> Get()
+        public IActionResult Get()
         {
-            return null;//new string[] { "value1", "value2" };
+            var id = this.GetUserId();
+            return Json(this.repository.GetRequests(id));
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         [Authorize]
-        public Request Get(int id)
+        public IActionResult Get(int senderID,int receiverID)
         {
-            return null;//"value";
+            return Json(this.repository.GetRequests(senderID,receiverID));
         }
 
         // POST api/values
         [HttpPost]
         [Authorize]
-        public void Post([FromBody]Request value)
+        public bool Post([FromBody]Request value)
         {
+            return this.repository.DoRequest(value);
         }
 
         // PUT api/values/5
@@ -40,10 +51,17 @@ namespace CallingRequestAPI.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        [Authorize]
-        public void Delete(int id)
+        [HttpDelete("{senderID}&{receiverID}")]
+        public bool Delete(int senderID,int receiverID)
         {
+            return this.repository.ClearRequests(senderID, receiverID);
+        }
+
+        private int GetUserId()
+        {
+            return int.Parse(
+                ((ClaimsIdentity)this.User.Identity).Claims
+                .Where(claim => claim.Type == "user_id").First().Value);
         }
     }
 }

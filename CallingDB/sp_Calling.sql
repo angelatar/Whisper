@@ -20,6 +20,11 @@ AS
 		SELECT * FROM Requests WHERE ReceiverID=@receiverID
 	END
 
+	IF(@Mode = 'Get_Request_By_Sender_And_Receiver')
+	BEGIN
+		SELECT * FROM Requests WHERE ReceiverID=@receiverID AND SenderID=@senderID
+	END
+
 	IF(@Mode = 'Insert_Buffer')
 	BEGIN
 		INSERT INTO Buffer VALUES (@senderID,@receiverID,@traffic)
@@ -32,7 +37,7 @@ AS
 
 	IF(@Mode = 'Get_Buffer')
 	BEGIN
-		SELECT * FROM Buffer WHERE ReceiverID=@receiverID
+		SELECT * FROM Buffer WHERE ReceiverID=@receiverID AND SenderID=@senderID
 	END
 
 RETURN 0

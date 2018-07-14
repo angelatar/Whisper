@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CallingRequestAPI.Businness;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+
 namespace CallingRequestAPI
 {
     public class Startup
@@ -12,6 +14,9 @@ namespace CallingRequestAPI
         /// <param name="services">Services</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(new CallingRequest());
+            services.AddSingleton(new CallProcess());
+
             // adding MVC Core,authorization and JSON formatting
             services.AddMvcCore()
                     .AddAuthorization()

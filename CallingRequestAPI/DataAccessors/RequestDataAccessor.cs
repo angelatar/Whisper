@@ -100,6 +100,39 @@ namespace CallingRequestAPI.DataAccessors
             return requests;
         }
 
+        public IEnumerable<Dictionary<string, object>> GetRequests(int senderID,int receiverID)
+        {
+            var requests = new List<Dictionary<string, object>>();
+
+            using (var conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                using (var cmd = new SqlCommand("sp_Calling", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Mode", "Get_Request_By_Sender_And_Receiver");
+                    cmd.Parameters.AddWithValue("@senderID", senderID);
+                    cmd.Parameters.AddWithValue("@receiverID", receiverID);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var request = new Dictionary<string, object>();
+                            request.Add("SenderID", reader["SenderID"]);
+                            request.Add("ReceiverID", reader["ReceiverID"]);
+                            request.Add("StateID", reader["StateID"]);
+
+                            requests.Add(request);
+                        }
+                    }
+                }
+            }
+
+            return requests;
+        }
+
         #endregion
     }
 }

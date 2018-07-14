@@ -1,6 +1,7 @@
 ﻿using CallingRequestAPI.DataAccessors;
 using CallingRequestAPI.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CallingRequestAPI.Businness
 {
@@ -12,49 +13,51 @@ namespace CallingRequestAPI.Businness
         {
             this.dataAccessor = new RequestDataAccessor();
         }
-
-        public bool DoCallingRequest(int senderID, int receiverID)
+        
+        public IEnumerable<Request> GetRequests(int receiverID)
         {
-            var request = new Dictionary<string, object>();
-            request.Add("SenderID", senderID);
-            request.Add("ReceiverID", receiverID);
-            request.Add("StateID", State.Call);
+            return this.dataAccessor.GetRequests(receiverID).Select(Mapper.CreateRequest);
+        }
 
+        public IEnumerable<Request> GetRequests(int senderID,int receiverID)
+        {
+            return this.dataAccessor.GetRequests(senderID, receiverID).Select(Mapper.CreateRequest);
+        }
+
+        public bool DoRequest(Request request)
+        {
+            var requestSK = Mapper.SplitRequest(request);
+            switch(request.State)
+            {
+                case State.Call:
+                    return this.DoCallingRequest(requestSK);
+                case State.Accept:
+                    return this.AcceptRequest(requestSK);
+                case State.Reject:
+                    return this.RejectRequest(requestSK);
+                case State.UnknownUser:
+                    return this.RejectRequestAutomatically(requestSK);
+            }
+            return false;
+        }
+
+        private bool DoCallingRequest(Dictionary<string, object> request)
+        {
             return this.dataAccessor.InsertRequest(request);
         }
 
-        public IEnumerable<Dictionary<string, object>> GetRequests(int receiverID)
+        private bool RejectRequest(Dictionary<string, object> request)
         {
-            return this.dataAccessor.GetRequests(receiverID);
-        }
-
-        public bool RejectRequest(int senderID, int receiverID)
-        {
-            var request = new Dictionary<string, object>();
-            request.Add("SenderID", senderID);
-            request.Add("ReceiverID", receiverID);
-            request.Add("StateID", State.Reject);
-
             return this.dataAccessor.InsertRequest(request);
         }
 
-        public bool AcceptRequest(int senderID, int receiverID)
+        private bool AcceptRequest(Dictionary<string, object> request)
         {
-            var request = new Dictionary<string, object>();
-            request.Add("SenderID", senderID);
-            request.Add("ReceiverID", receiverID);
-            request.Add("StateID", State.Accept);
-
             return this.dataAccessor.InsertRequest(request);
         }
 
-        public bool RejectRequestAutomatically(int senderID, int receiverID)
+        private bool RejectRequestAutomatically(Dictionary<string, object> request)
         {
-            var request = new Dictionary<string, object>();
-            request.Add("SenderID", senderID);
-            request.Add("ReceiverID", receiverID);
-            request.Add("StateID", State.UnknownUser);
-
             return this.dataAccessor.InsertRequest(request);
         }
 

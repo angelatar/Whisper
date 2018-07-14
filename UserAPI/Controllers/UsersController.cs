@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserAPI.Businness;
-using UserAPI.Models;
 
 namespace UserAPI.Controllers
 {
@@ -12,46 +12,57 @@ namespace UserAPI.Controllers
     {
         private readonly UsersRepository repository;
 
-        public UsersController()
+        public UsersController(UsersRepository repo)
         {
-            this.repository = new UsersRepository();
+            this.repository = repo;
         }
 
         // GET api/values
         [HttpGet]
         [Authorize]
-        public IEnumerable<User> Get()
+        public IActionResult Get()
         {
             //return new List<string>() { "Hi", " user" };
-            return this.repository.GetUsers();
+            return Json(this.repository.GetUsers());
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public User Get(int id)
+        [HttpGet("{id:int}")]
+        [Authorize]
+        public IActionResult Get(int id)
         {
-            return this.repository.GetUserByID(id);
+            return Json(this.repository.GetUserByID(id));
         }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]User user)
+        
+        [HttpGet("{username}")]
+        [Authorize]
+        public IActionResult Get(string username)
         {
-            this.repository.CreateUser(user);
+            return Json(this.repository.GetUserByUsername(username));
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
+        [Authorize]
         public void Put(int id, [FromBody]string value)
         {
             this.repository.UpdateUserPassword(id, value);
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Authorize]
+        public void Delete()
         {
+            var id = this.GetUserId();
             this.repository.DeleteUser(id);
+        }
+
+        private int GetUserId()
+        {
+            return int.Parse(
+                ((ClaimsIdentity)this.User.Identity).Claims
+                .Where(claim => claim.Type == "user_id").First().Value);
         }
     }
 }

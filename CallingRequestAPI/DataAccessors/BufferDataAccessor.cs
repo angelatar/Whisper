@@ -68,7 +68,7 @@ namespace CallingRequestAPI.DataAccessors
             }
         }
 
-        public Dictionary<string, object> GetBuffer(int receiverID)
+        public Dictionary<string, object> GetBuffer(int senderID,int receiverID)
         {
             var request = new Dictionary<string, object>();
 
@@ -80,6 +80,7 @@ namespace CallingRequestAPI.DataAccessors
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Mode", "Get_Buffer");
+                    cmd.Parameters.AddWithValue("@senderID", senderID);
                     cmd.Parameters.AddWithValue("@receiverID", receiverID);
 
                     using (var reader = cmd.ExecuteReader())
