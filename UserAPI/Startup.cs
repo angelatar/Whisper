@@ -15,6 +15,7 @@ namespace UserAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(new UsersRepository());
+            services.AddSingleton(new ValidationRepository());
 
             // adding MVC Core,authorization and JSON formatting
             services.AddMvcCore()

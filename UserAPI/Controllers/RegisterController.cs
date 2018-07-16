@@ -16,9 +16,9 @@ namespace UserAPI.Controllers
 
         [Route("api/Register")]
         [HttpPost]
-        public void Post([FromBody]User user)
+        public bool Post([FromBody]User user)
         {
-            this.repository.CreateUser(user);
+            return this.repository.CreateUser(user);
         }
     }
 }
