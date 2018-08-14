@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ecc" Version="1.0.5" />
     <PackageReference Include="IdentityModel" Version="3.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UserAPI\UserAPI.csproj" />
   </ItemGroup>
 
 </Project>

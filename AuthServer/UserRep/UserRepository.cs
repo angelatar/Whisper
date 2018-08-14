@@ -17,6 +17,9 @@ namespace AuthServer.UserRep
             var task = new Task<User>(() =>
             {
                 var user = this.dataAccessor.GetUserByUsername(userName);
+                // stex mi ban en chi
+                if (user.Count == 0)
+                    return null; 
                 return new User()
                 {
                     Id = (int)user["Id"],
@@ -35,6 +38,9 @@ namespace AuthServer.UserRep
             var task = new Task<User>(() =>
             {
                 var user = this.dataAccessor.GetUserByID(id);
+                if (user.Count == 0)
+                    return null;
+
                 return new User()
                 {
                     Id = (int)user["Id"],

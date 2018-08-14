@@ -25,6 +25,7 @@ namespace UserAPI.Models
                 Email = userSkeleton["Email"].ToString(),
                 CreateDate = DateTime.Parse(userSkeleton["CreateDate"].ToString()),
                 LastLoginDate = DateTime.Parse(userSkeleton["LastLoginDate"].ToString())
+
             };
         }
 

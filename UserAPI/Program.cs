@@ -10,9 +10,13 @@ namespace UserAPI
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            return WebHost
+                        .CreateDefaultBuilder(args)
+                        .UseUrls("http://192.168.88.136:61366") // <--add urls
+                        .UseStartup<Startup>()
+                        .Build();
+        }
     }
 }

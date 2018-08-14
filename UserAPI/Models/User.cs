@@ -46,5 +46,20 @@ namespace UserAPI.Models
         /// User last login datetime
         /// </summary>
         public DateTime LastLoginDate { set; get; }
+
+        public User()
+        {
+
+        }
+
+        public User(int id, string name, string lastname, string username, string passwordhash, string email)
+        {
+            this.ID = id;
+            this.Name = name;
+            this.Lastname = lastname;
+            this.Username = username;
+            this.PasswordHash = passwordhash;
+            this.Email = email;
+        }
     }
 }

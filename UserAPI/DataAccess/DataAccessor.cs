@@ -39,13 +39,11 @@ namespace UserAPI.DataAccess
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Get_All_Users", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
-
-                command.Parameters.AddWithValue("@Mode", "Get_All_Users");
-
+                
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -73,23 +71,23 @@ namespace UserAPI.DataAccess
         /// <returns>User</returns>
         public Dictionary<string, object> GetUserByID(int id)
         {
-            var user = new Dictionary<string, object>();
+            Dictionary<string, object> user = null;
 
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Get_User_By_ID", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Get_User_By_ID");
                 command.Parameters.AddWithValue("@id", id);
 
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
+                        user = new Dictionary<string, object>();
                         user.Add("Id", id);
                         user.Add("Name", reader["Name"]);
                         user.Add("Lastname", reader["Lastname"]);
@@ -115,12 +113,11 @@ namespace UserAPI.DataAccess
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Get_User_By_Username", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Get_User_By_Username");
                 command.Parameters.AddWithValue("@username", username);
 
                 using (var reader = command.ExecuteReader())
@@ -152,12 +149,11 @@ namespace UserAPI.DataAccess
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Get_Email", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Get_Email");
                 command.Parameters.AddWithValue("@id", id);
 
                 using (var reader = command.ExecuteReader())
@@ -182,12 +178,11 @@ namespace UserAPI.DataAccess
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Get_Last_Login", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Get_Last_Login");
                 command.Parameters.AddWithValue("@id", id);
 
                 using (var reader = command.ExecuteReader())
@@ -215,12 +210,11 @@ namespace UserAPI.DataAccess
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Create_User", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Create_User");
                 command.Parameters.AddWithValue("@name", user["Name"]);
                 command.Parameters.AddWithValue("@lastname", user["Lastname"]);
                 command.Parameters.AddWithValue("@username", user["Username"]);
@@ -245,12 +239,11 @@ namespace UserAPI.DataAccess
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Delete_User", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Delete_User");
                 command.Parameters.AddWithValue("@id", id);
 
                 return command.ExecuteNonQuery() != 0;
@@ -272,12 +265,11 @@ namespace UserAPI.DataAccess
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Update_Password", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Update_Password");
                 command.Parameters.AddWithValue("@id", id);
                 command.Parameters.AddWithValue("@passwordhash", passwordhash);
 
@@ -295,12 +287,11 @@ namespace UserAPI.DataAccess
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("sp_User_CRUD", connection)
+                var command = new SqlCommand("sp_Update_Last_Login_Date", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Update_Last_Login_Date");
                 command.Parameters.AddWithValue("@id", id);
 
                 return command.ExecuteNonQuery() != 0;

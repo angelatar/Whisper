@@ -62,6 +62,12 @@
     <Build Include="Requests.sql" />
     <Build Include="Buffer.sql" />
     <Build Include="State.sql" />
-    <Build Include="sp_Calling.sql" />
+    <Build Include="sp_Insert_Request.sql" />
+    <Build Include="sp_Delete_Request.sql" />
+    <Build Include="sp_Get_Request.sql" />
+    <Build Include="sp_Get_Request_By_Sender_And_Receiver.sql" />
+    <Build Include="sp_Insert_Buffer.sql" />
+    <Build Include="sp_Delete_Buffer.sql" />
+    <Build Include="sp_Get_Buffer.sql" />
   </ItemGroup>
 </Project>

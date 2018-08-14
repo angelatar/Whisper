@@ -20,25 +20,25 @@ namespace CallingRequestAPI.Controllers
 
         // GET api/values
         [HttpGet]
-        [Authorize]
-        public IActionResult Get()
+        //[Authorize]
+        public IActionResult Get(int id)
         {
-            var id = this.GetUserId();
+            //var id = this.GetUserId();
             return Json(this.repository.GetRequests(id));
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        [Authorize]
-        public IActionResult Get(int senderID,int receiverID)
-        {
-            return Json(this.repository.GetRequests(senderID,receiverID));
-        }
+        //// GET api/values/5
+        //[HttpGet("{id}")]
+        //[Authorize]
+        //public IActionResult Get(int senderID,int receiverID)
+        //{
+        //    return Json(this.repository.GetRequests(senderID,receiverID));
+        //}
 
         // POST api/values
         [HttpPost]
-        [Authorize]
-        public bool Post([FromBody]Request value)
+        //[Authorize]
+        public bool Post(Request value)
         {
             return this.repository.DoRequest(value);
         }
@@ -52,6 +52,7 @@ namespace CallingRequestAPI.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{senderID}&{receiverID}")]
+        [Authorize]
         public bool Delete(int senderID,int receiverID)
         {
             return this.repository.ClearRequests(senderID, receiverID);

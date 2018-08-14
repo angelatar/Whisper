@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace UserAPI.Controllers
         [Authorize]
         public IActionResult Get()
         {
-            //return new List<string>() { "Hi", " user" };
+            //return Json(new List<string>() { "Hi", " user" });
             return Json(this.repository.GetUsers());
         }
 
@@ -31,10 +32,12 @@ namespace UserAPI.Controllers
         [Authorize]
         public IActionResult Get(int id)
         {
-            return Json(this.repository.GetUserByID(id));
+            var user = this.repository.GetUserByID(id);
+            return Json(user);
         }
         
         [HttpGet("{username}")]
+        [Route("api/users/{username}")]
         [Authorize]
         public IActionResult Get(string username)
         {

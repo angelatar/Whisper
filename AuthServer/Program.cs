@@ -18,8 +18,10 @@ namespace AuthServer
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+                     WebHost
+                        .CreateDefaultBuilder(args)
+                        .UseUrls("http://192.168.88.136:59447") // <--add urls
+                        .UseStartup<Startup>()
+                        .Build();
     }
 }

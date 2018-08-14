@@ -24,57 +24,54 @@ namespace UserAPI.DataAccess
             connectionString = configuration["ConnectionStrings:Connection"];
         }
 
-        public bool InsertValidationCode(int userID,string code)
+        public bool InsertValidationCode(string userEmail,string code)
         {
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("[sp_Validator]", connection)
+                var command = new SqlCommand("sp_Instert_Code", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Instert_Code");
-                command.Parameters.AddWithValue("@userID", userID);
+                command.Parameters.AddWithValue("@userEmail", userEmail);
                 command.Parameters.AddWithValue("@code", code);
 
                 return command.ExecuteNonQuery() != 0;
             }
         }
 
-        public bool CheckValidationCode(int userID, string code)
+        public bool CheckValidationCode(string userEmail, string code)
         {
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("[sp_Validator]", connection)
+                var command = new SqlCommand("sp_Check_Code", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Check_Code");
-                command.Parameters.AddWithValue("@userID", userID);
+                command.Parameters.AddWithValue("@userEmail", userEmail);
                 command.Parameters.AddWithValue("@code", code);
 
                 using (var reader = command.ExecuteReader())
                 {
-                    return reader != null;
+                    return reader.HasRows;
                 }
             }
         }
 
-        public bool DeleteValidationCode(int userID)
+        public bool DeleteValidationCode(string userEmail)
         {
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("[sp_Validator]", connection)
+                var command = new SqlCommand("sp_Delete_Code", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure,
                 };
 
-                command.Parameters.AddWithValue("@Mode", "Delete_Code");
-                command.Parameters.AddWithValue("@userID", userID);
+                command.Parameters.AddWithValue("@userEmail", userEmail);
 
                 return command.ExecuteNonQuery() != 0;
             }

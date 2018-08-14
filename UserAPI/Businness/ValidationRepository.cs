@@ -15,19 +15,23 @@ namespace UserAPI.Businness
         ///  Check user's validation code
         /// </summary>
         /// <returns>User</returns>
-        public bool CheckValidationCode(int userid,string code)
+        public bool CheckValidationCode(string userEmail,string code)
         {
-            return this.dataAccessor.CheckValidationCode(userid,code);
+            return this.dataAccessor.CheckValidationCode(userEmail,code);
         }
 
-        public bool InstertValidationCode(int userid, string code)
+        public bool InstertValidationCode(string userEmail)
         {
-            return this.dataAccessor.InsertValidationCode(userid, code);
+            var code = ValidationCode.CodeGenerator();
+            if (ValidationCode.Send(userEmail, code))
+                return this.dataAccessor.InsertValidationCode(userEmail, code);
+            else
+                return false;
         }
 
-        public bool DeleteValidationCode(int userid)
+        public bool DeleteValidationCode(string userEmail)
         {
-            return this.dataAccessor.DeleteValidationCode(userid);
+            return this.dataAccessor.DeleteValidationCode(userEmail);
         }
 
     }

@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[ValidationCodes]
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
-    [UserID] INT NOT NULL, 
+    [UserEmail] NVARCHAR(50) NOT NULL, 
     [Code] NVARCHAR(50) NOT NULL
 )

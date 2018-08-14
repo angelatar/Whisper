@@ -60,9 +60,19 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Users.sql" />
-    <Build Include="sp_User_CRUD.sql" />
     <Build Include="ValidationCodes.sql" />
-    <Build Include="sp_Validator.sql" />
+    <Build Include="sp_Create_User.sql" />
+    <Build Include="sp_Delete_User.sql" />
+    <Build Include="sp_Update_Password.sql" />
+    <Build Include="sp_Update_Last_Login_Date.sql" />
+    <Build Include="sp_Get_User_By_ID.sql" />
+    <Build Include="sp_Get_User_By_Username.sql" />
+    <Build Include="sp_Get_All_Users.sql" />
+    <Build Include="sp_Get_Email.sql" />
+    <Build Include="sp_Get_Last_Login.sql" />
+    <Build Include="sp_Instert_Code.sql" />
+    <Build Include="sp_Check_Code.sql" />
+    <Build Include="sp_Delete_Code.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="UserDB.refactorlog" />

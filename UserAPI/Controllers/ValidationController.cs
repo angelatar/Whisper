@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using UserAPI.Businness;
-using System.Linq;
 
 namespace UserAPI.Controllers
 {
@@ -16,32 +14,33 @@ namespace UserAPI.Controllers
             this.repo = repository;
         }
 
+        //[HttpGet]
+        //public IActionResult Get()
+        //{
+        //    return Json(new List<string>() { "Hi", " user" });
+        //}
+
         [HttpGet]
-        public IActionResult Get(string code)
+        //[Route("{email}&{code}")]
+        public IActionResult Get(string email,string code)
         {
-            var id = this.GetUserId();
-            return Json(this.repo.CheckValidationCode(id,code));
+            //return Json(new List<string>() { "bye", " user" });
+            return Json(this.repo.CheckValidationCode(email, code));
         }
         
         [HttpPost]
-        public bool Post([FromBody]string code)
+        //[Route("api/Validation/{email}&{code}")]
+        public bool Post(string email)
         { 
-            var id = this.GetUserId();
-            return this.repo.InstertValidationCode(id, code);
+            return this.repo.InstertValidationCode(email);
         }
         
         [HttpDelete]
-        public void Delete()
+        //[Route("api/Validation/{email}")]
+        public bool Delete(string email)
         {
-            var id = this.GetUserId();
-            this.repo.DeleteValidationCode(id);
+            return this.repo.DeleteValidationCode(email);
         }
 
-        private int GetUserId()
-        {
-            return int.Parse(
-                ((ClaimsIdentity)this.User.Identity).Claims
-                .Where(claim => claim.Type == "user_id").First().Value);
-        }
     }
 }

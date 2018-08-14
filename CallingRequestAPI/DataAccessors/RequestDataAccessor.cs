@@ -35,10 +35,9 @@ namespace CallingRequestAPI.DataAccessors
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_Calling", conn))
+                using (var cmd = new SqlCommand("sp_Insert_Request", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Insert_Request");
                     cmd.Parameters.AddWithValue("@senderID", request["SenderID"]);
                     cmd.Parameters.AddWithValue("@receiverID", request["ReceiverID"]);
                     cmd.Parameters.AddWithValue("@stateID", request["StateID"]);
@@ -55,10 +54,9 @@ namespace CallingRequestAPI.DataAccessors
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_Calling", conn))
+                using (var cmd = new SqlCommand("sp_Delete_Request", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Delete_Request");
                     cmd.Parameters.AddWithValue("@senderID", request["SenderID"]);
                     cmd.Parameters.AddWithValue("@receiverID", request["ReceiverID"]);
 
@@ -76,10 +74,9 @@ namespace CallingRequestAPI.DataAccessors
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_Calling", conn))
+                using (var cmd = new SqlCommand("sp_Get_Request", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Get_Request");
                     cmd.Parameters.AddWithValue("@receiverID", receiverID);
 
                     using (var reader = cmd.ExecuteReader())
@@ -108,10 +105,9 @@ namespace CallingRequestAPI.DataAccessors
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_Calling", conn))
+                using (var cmd = new SqlCommand("sp_Get_Request_By_Sender_And_Receiver", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Get_Request_By_Sender_And_Receiver");
                     cmd.Parameters.AddWithValue("@senderID", senderID);
                     cmd.Parameters.AddWithValue("@receiverID", receiverID);
 

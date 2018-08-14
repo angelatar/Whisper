@@ -26,12 +26,16 @@ namespace CallingRequestAPI.Models
 
         public static Call CreateCall(Dictionary<string, object> messageSk)
         {
-            return new Call()
+            if (messageSk.Count != 0)
             {
-                SenderID = (int)messageSk["SenderID"],
-                ReceiverID = (int)messageSk["ReceiverID"],
-                Traffic = messageSk["Traffic"].ToString()
-            };
+                return new Call()
+                {
+                    SenderID = (int)messageSk["SenderID"],
+                    ReceiverID = (int)messageSk["ReceiverID"],
+                    Traffic = messageSk["Traffic"].ToString()
+                };
+            }
+            return null;
         }
 
         public static Dictionary<string, object> SplitCall(Call call)

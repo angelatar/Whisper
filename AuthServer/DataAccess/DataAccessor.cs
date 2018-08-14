@@ -27,10 +27,9 @@ namespace AuthServer.DataAccess
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_User_CRUD", conn))
+                using (var cmd = new SqlCommand("sp_Get_User_By_Username", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Get_User_By_Username");
                     cmd.Parameters.AddWithValue("@username", username);
 
                     using (var reader = cmd.ExecuteReader())
@@ -56,10 +55,9 @@ namespace AuthServer.DataAccess
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_User_CRUD", conn))
+                using (var cmd = new SqlCommand("sp_Get_User_By_ID", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Get_User_By_ID");
                     cmd.Parameters.AddWithValue("@id", id);
 
                     using (var reader = cmd.ExecuteReader())

@@ -39,6 +39,19 @@ namespace AuthServer
                 AllowedScopes = { "UserAPI","CallingRequestAPI" }
             });
 
+            clients.Add(new Client()
+            {
+                ClientId = "WhisperApp",
+
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                ClientSecrets =
+                {
+                    new Secret("secret".Sha256())
+                },
+                AllowedScopes = { "UserAPI", "CallingRequestAPI" }
+            });
+
             return clients;
         }
 

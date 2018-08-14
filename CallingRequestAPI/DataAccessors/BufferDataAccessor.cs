@@ -35,10 +35,9 @@ namespace CallingRequestAPI.DataAccessors
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_Calling", conn))
+                using (var cmd = new SqlCommand("sp_Insert_Buffer", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Insert_Buffer");
                     cmd.Parameters.AddWithValue("@senderID", buffer["SenderID"]);
                     cmd.Parameters.AddWithValue("@receiverID", buffer["ReceiverID"]);
                     cmd.Parameters.AddWithValue("@traffic", buffer["Traffic"]);
@@ -55,10 +54,9 @@ namespace CallingRequestAPI.DataAccessors
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_Calling", conn))
+                using (var cmd = new SqlCommand("sp_Delete_Buffer", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Delete_Buffer");
                     cmd.Parameters.AddWithValue("@senderID", buffer["SenderID"]);
                     cmd.Parameters.AddWithValue("@receiverID", buffer["ReceiverID"]);
 
@@ -76,10 +74,9 @@ namespace CallingRequestAPI.DataAccessors
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("sp_Calling", conn))
+                using (var cmd = new SqlCommand("sp_Get_Buffer", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Mode", "Get_Buffer");
                     cmd.Parameters.AddWithValue("@senderID", senderID);
                     cmd.Parameters.AddWithValue("@receiverID", receiverID);
 
