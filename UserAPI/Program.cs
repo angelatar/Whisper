@@ -14,7 +14,7 @@ namespace UserAPI
         {
             return WebHost
                         .CreateDefaultBuilder(args)
-                        .UseUrls("http://192.168.88.136:61366") // <--add urls
+                        .UseUrls("http://10.27.249.82:61366") // <--add urls
                         .UseStartup<Startup>()
                         .Build();
         }

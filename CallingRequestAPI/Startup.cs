@@ -26,9 +26,9 @@ namespace CallingRequestAPI
             services.AddAuthentication("Bearer")
                     .AddIdentityServerAuthentication(options =>
                     {
-                        options.Authority = "http://192.168.88.136:59447";
+                        options.Authority = "http://10.27.249.82:59447";
                         options.RequireHttpsMetadata = false;
-                        options.ApiName = "CallingUserAPI";
+                        options.ApiName = "CallingRequestAPI";
                     });
         }
 

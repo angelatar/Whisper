@@ -33,7 +33,7 @@ namespace ChatClient
                 //client.DefaultRequestHeaders.Accept.Add(
                 //     new MediaTypeWithQualityHeaderValue("application/json"));
 
-                //var response = client.DeleteAsync("http://192.168.88.21:61366/api/Validation?email=bee").Result;
+                //var response = client.DeleteAsync("http://10.27.249.82:61366/api/Validation?email=bee").Result;
                 //var content = response.Content.ReadAsStringAsync().Result;
                 //var bee = JsonConvert.DeserializeObject(content);
                 //Console.WriteLine(content);
@@ -50,8 +50,8 @@ namespace ChatClient
                 //    new KeyValuePair<string, string>("PasswordHash", "bee2"),
                 //    new KeyValuePair<string, string>("Email", "bee2")
                 //});
-                ////var response = client.GetAsync("http://192.168.88.21:61366/api/Register").Result;
-                //var response = client.PostAsync("http://192.168.88.21:61366/api/Register",content1).Result;// client.GetAsync(builder.Uri).Result;
+                ////var response = client.GetAsync("http://10.27.249.82:61366/api/Register").Result;
+                //var response = client.PostAsync("http://10.27.249.82:61366/api/Register",content1).Result;// client.GetAsync(builder.Uri).Result;
                 //var content = response.Content.ReadAsStringAsync().Result;
                 //var bee = JsonConvert.DeserializeObject(content);
                 //Console.WriteLine(content);
@@ -62,10 +62,35 @@ namespace ChatClient
 
             //var prkey = Ecc.ECPrivateKey.Create(new Ecc.ECCurve());
             {
+                var identityClient = new DiscoveryClient("http://10.27.249.82:59447"); //discover the IdentityServer
+                identityClient.Policy.RequireHttps = false;
+
+                var identityServer = identityClient.GetAsync().Result;
+
+                if (identityServer.IsError)
+                {
+                    Console.Write(identityServer.Error);
+                    return;
+                }
+
+                Console.Write("Enter Username 1: ");
+                var username = Console.ReadLine();
+                Console.Write("Enter Password : ");
+                var password = Console.ReadLine();
+
+                //Console.WriteLine(identityServer.TokenEndpoint);
+
+                //Get the token
+                var tokenClient = new TokenClient(identityServer.TokenEndpoint, "ChatClient", "secret");
+                var tokenResponse = tokenClient.RequestResourceOwnerPasswordAsync(username, password, "CallingRequestAPI").Result;
+                //Console.WriteLine(tokenResponse.AccessToken);
+
+
                 Console.WriteLine("Enter receiver name");
                 var receiver = Console.ReadLine();
 
                 var client = new HttpClient();
+                client.SetBearerToken(tokenResponse.AccessToken);
                 client.DefaultRequestHeaders.Accept.Add(
                      new MediaTypeWithQualityHeaderValue("application/json"));
                 var content1 = new FormUrlEncodedContent(new[]
@@ -74,7 +99,7 @@ namespace ChatClient
                     new KeyValuePair<string, string>("ReceiverID", "8"),
                     new KeyValuePair<string, string>("State", "1"),
                 });
-                var response = client.PostAsync("http://localhost:63653/api/CallingRequest", content1).Result;
+                var response = client.PostAsync("http://10.27.249.82:63653/api/CallingRequest", content1).Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 Console.WriteLine(content);
 
@@ -85,14 +110,20 @@ namespace ChatClient
                     {
                         Thread.Sleep(1000);
                         var client1 = new HttpClient();
+                        client1.SetBearerToken(tokenResponse.AccessToken);
                         client1.DefaultRequestHeaders.Accept.Add(
                              new MediaTypeWithQualityHeaderValue("application/json"));
 
-                        var response1 = client1.GetAsync(string.Format("http://localhost:63653/api/CallingRequest?id={0}", 1)).Result;
+                        var response1 = client1.GetAsync(string.Format("http://10.27.249.82:63653/api/CallingRequest?id={0}", 1)).Result;
                         var content2 = response1.Content.ReadAsStringAsync().Result;
                         Console.WriteLine(content2);
-                        if (content2 != null || content2 != "" || content2 != "[]")
-                            return content;
+                        if (content2 != null && content2 != "" && content2 != "[]")
+                        {
+                            var response56 = client1.DeleteAsync(string.Format("http://10.27.249.82:63653/api/CallingRequest?senderID={0}&receiverID={1}", 8, 1)).Result;
+                            var content56 = response56.Content.ReadAsStringAsync().Result;
+
+                            return content2;
+                        }
                     }
                 }
                 );
@@ -110,14 +141,20 @@ namespace ChatClient
                     {
                         Thread.Sleep(1000);
                         var client33 = new HttpClient();
+                       
+                        client33.SetBearerToken(tokenResponse.AccessToken);
                         client33.DefaultRequestHeaders.Accept.Add(
                              new MediaTypeWithQualityHeaderValue("application/json"));
 
-                        var response22 = client33.GetAsync(string.Format("http://localhost:63653/api/CallProcess?senderID={0}&receiverID={1}", 8, 1)).Result;
+                        var response22 = client33.GetAsync(string.Format("http://10.27.249.82:63653/api/CallProcess?senderID={0}&receiverID={1}", 8, 1)).Result;
                         var content22 = response22.Content.ReadAsStringAsync().Result;
                        
-                        if (content22 != null || content22 != "" || content22 != "[]")
-                            Console.WriteLine(content22); 
+                        if (content22 != null && content22 != "" && content22 != "[]" && content22 != "null")
+                            Console.WriteLine(content22);
+
+                        var response28 = client33.DeleteAsync(string.Format("http://10.27.249.82:63653/api/CallProcess?senderID={0}&receiverID={1}", 1, 8)).Result;
+                        var content28 = response28.Content.ReadAsStringAsync().Result;
+
                     }
                 }
                 );
@@ -130,6 +167,8 @@ namespace ChatClient
                         var message = Console.ReadLine();
 
                         var client8 = new HttpClient();
+
+                        client8.SetBearerToken(tokenResponse.AccessToken);
                         client8.DefaultRequestHeaders.Accept.Add(
                              new MediaTypeWithQualityHeaderValue("application/json"));
                         var content8 = new FormUrlEncodedContent(new[]
@@ -138,7 +177,7 @@ namespace ChatClient
                             new KeyValuePair<string, string>("ReceiverID", "8"),
                             new KeyValuePair<string, string>("Traffic", message),
                         });
-                        var response8 = client8.PostAsync("http://localhost:63653/api/CallProcess", content8).Result;
+                        var response8 = client8.PostAsync("http://10.27.249.82:63653/api/CallProcess", content8).Result;
                         var content9 = response8.Content.ReadAsStringAsync().Result;
                         Console.WriteLine(content9);
 
@@ -184,7 +223,7 @@ namespace ChatClient
             client.DefaultRequestHeaders.Accept.Add(
                  new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //UriBuilder builder = new UriBuilder("http://192.168.88.21:61366/api/users");
+            //UriBuilder builder = new UriBuilder("http://10.27.249.82:61366/api/users");
             //builder.Query = "id=1";
 
 

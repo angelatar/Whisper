@@ -20,7 +20,7 @@ namespace CallingRequestAPI.Controllers
 
         // GET api/values
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public IActionResult Get(int id)
         {
             //var id = this.GetUserId();
@@ -37,7 +37,7 @@ namespace CallingRequestAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public bool Post(Request value)
         {
             return this.repository.DoRequest(value);
@@ -51,7 +51,7 @@ namespace CallingRequestAPI.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{senderID}&{receiverID}")]
+        [HttpDelete]
         [Authorize]
         public bool Delete(int senderID,int receiverID)
         {
